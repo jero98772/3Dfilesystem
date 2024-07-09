@@ -1,6 +1,6 @@
 # 3D File System with Flask and Three.js
 
-This project implements a 3D file system visualization using Flask for the backend API and Three.js for the frontend visualization. It connects to the operating system's API to retrieve file system information and presents it in an interactive 3D environment.
+This project and a proof of concept of implements a 3D file system visualization using Flask for the backend API and Three.js for the frontend visualization. It connects to the operating system's API to retrieve file system information and presents it in an interactive 3D environment.
 
 ## Installation
 
@@ -25,6 +25,12 @@ To run this project locally, follow these steps:
    ```
 
 2. Open your web browser and go to `http://localhost:5000` to view the 3D file system visualization.
+
+## Pictures
+
+
+![](https://github.com/jero98772/3Dfilesystem/blob/main/pictures/2024-07-09-092439_1920x1080_scrot.png)
+![](https://github.com/jero98772/3Dfilesystem/blob/main/pictures/2024-07-09-094901_1920x1080_scrot.png)
 
 ## Features
 
