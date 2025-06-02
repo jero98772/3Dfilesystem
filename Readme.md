@@ -8,7 +8,7 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/jero98772/3Dfilesystem
    cd 3d-file-system
    ```
 
@@ -21,7 +21,7 @@ To run this project locally, follow these steps:
 
 1. Start the Flask server:
    ```bash
-   python app.py
+   python main.py
    ```
 
 2. Open your web browser and go to `http://localhost:5000` to view the 3D file system visualization.
