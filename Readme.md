@@ -9,7 +9,7 @@ To run this project locally, follow these steps:
 1. Clone the repository:
    ```bash
    git clone https://github.com/jero98772/3Dfilesystem
-   cd 3d-file-system
+   cd 3Dfilesystem
    ```
 
 2. Install Flask (if not already installed):
