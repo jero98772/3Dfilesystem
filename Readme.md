@@ -2,6 +2,14 @@
 
 This project and a proof of concept of implements a 3D file system visualization using Flask for the backend API and Three.js for the frontend visualization. It connects to the operating system's API to retrieve file system information and presents it in an interactive 3D environment.
 
+With the absolute path we know what files and folders are there, for each folder and file we display a 3D Cube
+
+We pass the data from python flask, (will be very similar with fastapi and django, and other webframeworks in other languages to pass the data to the fronend)
+
+The url will be our absolute path
+
+From js we get that data and do animations with threejs, rotate the camara, make add names to the cubics , make them clickable
+
 ## Installation
 
 To run this project locally, follow these steps:
@@ -50,5 +58,5 @@ Contributions are welcome! Fork the repository and submit a pull request with yo
 
 ## License
 
-This project is licensed under the [GPLv3 License](link-to-license).
+This project is licensed under the [GPLv3 License]().
 

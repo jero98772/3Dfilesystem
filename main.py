@@ -1,6 +1,8 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template
 import os
+
 app = Flask(__name__)
+
 def listdir_without_hidden(path):
     for file in os.listdir(path):
         if not file.startswith('.'):
@@ -16,7 +18,6 @@ def index(path=None):
     else:
         path="/"+path
     data = list(listdir_without_hidden(path))
-    currentDirectory = os.path.abspath(path)
     
     return render_template('index.html', data_array=data)
 
