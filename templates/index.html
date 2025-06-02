@@ -11,150 +11,137 @@
 <div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
+    const centerX = 0;
+    const centerY = 0;
+    const centerZ = 0;
+    const radiusX = 25; // semi-major axis
+    const radiusY = 25; // semi-minor axis
+    const angleIncrement = 0.009; // adjust to control speed of rotation
+
+    let angle = 0;
+    let mouse = new THREE.Vector2();
+    let raycaster = new THREE.Raycaster();
 
 
-  // Parameters for the ellipse
-const centerX = 0;
-const centerY = 0;
-const centerZ = 0;
-const radiusX = 25; // semi-major axis
-const radiusY = 25; // semi-minor axis
-const angleIncrement = 0.009; // adjust to control speed of rotation
+    // Function to create a texture with text
+    function getRandomColor() {
+        // Generate random values for RGB (red, green, blue)
+        const r = Math.floor(Math.random() * 256); // Random between 0 and 255
+        const g = Math.floor(Math.random() * 256); // Random between 0 and 255
+        const b = Math.floor(Math.random() * 256); // Random between 0 and 255
 
-let angle = 0;
-let mouse = new THREE.Vector2();
-let raycaster = new THREE.Raycaster();
+        // Construct a color string in the format "rgb(r, g, b)"
+        const color = `rgb(${r}, ${g}, ${b})`;
 
+        return color;
+    }
 
-// Function to create a texture with text
-function getRandomColor() {
-    // Generate random values for RGB (red, green, blue)
-    const r = Math.floor(Math.random() * 256); // Random between 0 and 255
-    const g = Math.floor(Math.random() * 256); // Random between 0 and 255
-    const b = Math.floor(Math.random() * 256); // Random between 0 and 255
+    function navigateToFolder(folderName) {
+        // Construct the new URL by appending the folder name to the current path
+        const newPath = window.location.pathname + '/' + folderName;
+        // Open the new path in the same window
+        window.location.href = newPath;
+    }
+    // Function to create 3D text
+    function create3DText(text, position, size = 1, color = 0xffffff) {
+        const loader = new THREE.FontLoader();
+        const fontUrl = 'https://cdn.jsdelivr.net/npm/three/examples/fonts/helvetiker_regular.typeface.json'; // Example font URL
+        loader.load(fontUrl, function (font) {
+            const geometry = new THREE.TextGeometry(text, {
+                font: font,
+                size: size,
+                height: 0.1, // Extrusion thickness
+                curveSegments: 12,
+                bevelEnabled: false // No bevel for simplicity
+            });
 
-    // Construct a color string in the format "rgb(r, g, b)"
-    const color = `rgb(${r}, ${g}, ${b})`;
+            const material = new THREE.MeshBasicMaterial({ color: color });
+            const textMesh = new THREE.Mesh(geometry, material);
 
-    return color;
-}
+            textMesh.position.copy(position);
 
-function navigateToFolder(folderName) {
-    // Construct the new URL by appending the folder name to the current path
-    const newPath = window.location.pathname + '/' + folderName;
-    // Open the new path in the same window
-    window.location.href = newPath;
-}
-// Function to create 3D text
-function create3DText(text, position, size = 1, color = 0xffffff) {
-    const loader = new THREE.FontLoader();
-    const fontUrl = 'https://cdn.jsdelivr.net/npm/three/examples/fonts/helvetiker_regular.typeface.json'; // Example font URL
-    loader.load(fontUrl, function (font) {
-        const geometry = new THREE.TextGeometry(text, {
-            font: font,
-            size: size,
-            height: 0.1, // Extrusion thickness
-            curveSegments: 12,
-            bevelEnabled: false // No bevel for simplicity
+            scene.add(textMesh);
+            textMesh.rotation.copy(90); // Set the rotation
+
         });
-
-        const material = new THREE.MeshBasicMaterial({ color: color });
-        const textMesh = new THREE.Mesh(geometry, material);
-
-        textMesh.position.copy(position);
-
-        scene.add(textMesh);
-        textMesh.rotation.copy(90); // Set the rotation
-
-    });
-}
-
-
+    }
     function getRandom(min, max) {
         return Math.random() * (max - min) + min;
     }
 
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+        const geometry = new THREE.BoxGeometry(2, 2, 2);
+        const cubes = [];
+        var files = {{ data_array | tojson | safe }};
+        var list = document.getElementById('arrayList');
+         
+    for (let i = 0; i < files.length; i++) {
+        let cubeColor = getRandomColor();
+        const material = new THREE.MeshBasicMaterial({ color: cubeColor });
+        cube = new THREE.Mesh(geometry, material); // Create a new cube instance
+        // Assign userData to the cube
 
-    const geometry = new THREE.BoxGeometry(2, 2, 2);
-    const cubes = [];
-    var files = {{ data_array | tojson | safe }};
-    var list = document.getElementById('arrayList');
-     
-for (let i = 0; i < files.length; i++) {
-    let cubeColor = getRandomColor();
-    const material = new THREE.MeshBasicMaterial({ color: cubeColor });
-    cube = new THREE.Mesh(geometry, material); // Create a new cube instance
-    // Assign userData to the cube
+          cube.position.x= getRandom(0, 20);
+          cube.position.y= getRandom(0, 20);
+          cube.position.z= getRandom(0, 20);
+          textPosition = new THREE.Vector3(cube.position.x+1, cube.position.y+1, cube.position.z+1); // Adjust position in front of the boxes
+          cube.userData = { url: files[i] };
 
-      cube.position.x= getRandom(0, 20);
-      cube.position.y= getRandom(0, 20);
-      cube.position.z= getRandom(0, 20);
-      textPosition = new THREE.Vector3(cube.position.x+1, cube.position.y+1, cube.position.z+1); // Adjust position in front of the boxes
-      cube.userData = { url: files[i] };
+          create3DText(files[i], textPosition, 1,  cubeColor); 
 
-      create3DText(files[i], textPosition, 1,  cubeColor); 
+          scene.add(cube);
+          cubes.push(cube);
 
-      scene.add(cube);
-      cubes.push(cube);
+          //cube.translateOnAxis( getRandom(0, 100), getRandom(0, 100 ));
 
-      //cube.translateOnAxis( getRandom(0, 100), getRandom(0, 100 ));
-
+        }
+      
+    for (let i = 0; i < files.length; i++) {
+        console.log(cubes[i].userData)
     }
-  
 
-for (let i = 0; i < files.length; i++) {
-    console.log(cubes[i].userData)
+    document.addEventListener('click', onClick, false);
 
-}
+    function onClick(event) {
+        // Calculate mouse position in normalized device coordinates ([-1, 1])
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
+        // Update the picking ray with the camera and mouse position
+        raycaster.setFromCamera(mouse, camera);
 
+        // Calculate objects intersecting the picking ray
+        const intersects = raycaster.intersectObjects(cubes);
+        if (intersects.length > 0) {
+            const selectedCube = intersects[0].object;
 
-document.addEventListener('click', onClick, false);
+            console.log("Selected Cube Properties:  ",cube.userData.link);
+            console.log("Position: ", selectedCube.position);
+            console.log("Color: ", selectedCube.material.color.getHexString());
 
-function onClick(event) {
-    // Calculate mouse position in normalized device coordinates ([-1, 1])
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            // Display properties in HTML or console as needed
+        event.preventDefault();
+        console.log(window.location)
+        // Open the URL in a new tab/window
+        //const newPath = window.location.pathname + '/{{ path }}';
+        if (window.location.href.charAt(window.location.href.length - 1)=="/") {
+            newPath = window.location.href +selectedCube.userData.url;
+        }else{
+            newPath = window.location.href +"/" + selectedCube.userData.url;
+        }
+        //navigateToFolder(newPath)
+        console.log(newPath)
 
-    // Update the picking ray with the camera and mouse position
-    raycaster.setFromCamera(mouse, camera);
+        // Open the new path in the same window
+        window.open(newPath);
 
-    // Calculate objects intersecting the picking ray
-    const intersects = raycaster.intersectObjects(cubes);
-    if (intersects.length > 0) {
-        const selectedCube = intersects[0].object;
-
-        console.log("Selected Cube Properties:  ",cube.userData.link);
-        console.log("Position: ", selectedCube.position);
-        console.log("Color: ", selectedCube.material.color.getHexString());
-
-        // Display properties in HTML or console as needed
-    event.preventDefault();
-    console.log(window.location)
-    // Open the URL in a new tab/window
-    //const newPath = window.location.pathname + '/{{ path }}';
-    if (window.location.href.charAt(window.location.href.length - 1)=="/") {
-        newPath = window.location.href +selectedCube.userData.url;
-    }else{
-        newPath = window.location.href +"/" + selectedCube.userData.url;
+        }
     }
-    //navigateToFolder(newPath)
-    console.log(newPath)
-
-    // Open the new path in the same window
-    window.open(newPath);
-
-    }
-}
-
-
-
     camera.position.z = 50;
     camera.position.x = 22;
 
